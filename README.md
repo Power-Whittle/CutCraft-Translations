@@ -19,6 +19,19 @@ Open an [issue here](../../issues), and name the language, the words you saw and
 The pack's translators answer here. Report anything else that goes wrong in Cut Craft from
 inside Cut Craft (right-click ▸ **Report a Bug Here…**).
 
+## New: tool names, groups, tabs and menus
+
+Since Cut Craft PR #703, tool names, tool groups, sub-tabs, page tabs and menu items can be
+translated too. Their English is in four files in Cut Craft's source:
+
+- [tools.ftl](https://github.com/NoobyNull/Cut-Craft/blob/main/crates/i18n/locales/en/tools.ftl): every tool's name, keyed by the tool's id (`tools-draw-circle`)
+- [tool-groups.ftl](https://github.com/NoobyNull/Cut-Craft/blob/main/crates/i18n/locales/en/tool-groups.ftl): group names and tool box captions (`group-create-vectors`)
+- [subtabs.ftl](https://github.com/NoobyNull/Cut-Craft/blob/main/crates/i18n/locales/en/subtabs.ftl): sub-tabs with their tooltips, side tabs, browser and Ribbon tabs
+- [menu-items.ftl](https://github.com/NoobyNull/Cut-Craft/blob/main/crates/i18n/locales/en/menu-items.ftl): menu bar and right-click menu items
+
+Copy them into your pack's folder with the same names and translate the words after each `=`.
+See [docs/translating.md, Tool names, groups, tabs and menus](https://github.com/NoobyNull/Cut-Craft/blob/main/docs/translating.md#tool-names-groups-tabs-and-menus).
+
 ## Translate
 
 The packs are made from `language-packs/` in
