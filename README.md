@@ -55,6 +55,7 @@ The English is in these files in Cut Craft's source:
 | [tool-database.ftl](https://github.com/NoobyNull/Cut-Craft/blob/main/crates/i18n/locales/en/tool-database.ftl) | Tool Database sentences with values in them | 11 |
 | [errors.ftl](https://github.com/NoobyNull/Cut-Craft/blob/main/crates/i18n/locales/en/errors.ftl) | What a tool says when it cannot run | 299 |
 | [menu-items.ftl](https://github.com/NoobyNull/Cut-Craft/blob/main/crates/i18n/locales/en/menu-items.ftl) | Menu items, now also the job's right-click menus | 241 |
+| [view-cube.ftl](https://github.com/NoobyNull/Cut-Craft/blob/main/crates/i18n/locales/en/view-cube.ftl) | The 3D view's cube: its face names, Home, the turn buttons and their tips | 14 |
 
 These join the files that could already be translated, such as `app.ftl` and `panels.ftl`.
 All of Cut Craft's English is in
