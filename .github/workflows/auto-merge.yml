@@ -1,0 +1,52 @@
+# Matthew's own pull requests merge by themselves once the required check passes (the Check
+# workflow's "check"). Anyone else's pull request is left alone.
+#
+# It only turns GitHub's auto-merge on; main's ruleset decides when a merge happens. If main
+# requires nothing, gh merges straight away instead.
+# It skips: other authors, branches from forks, drafts, and pull requests that don't target
+# main (stacked pull requests would otherwise merge into each other at once).
+#
+# pull_request_target runs this file as it is on main, never a pull request's own copy, so a
+# pull request can't edit the checks below. Never add a checkout or run anything from the
+# pull request's branch here.
+#
+# GitHub's own token is used, so a merge made here starts no push-to-main workflows (GitHub
+# never starts workflows for its own token's pushes). Copy releases can be run by hand from
+# the Actions tab. If a workflow that must run on every merge is added later, switch GH_TOKEN
+# to a fine-grained token owned by NoobyNull, as NoobyNull/Cut-Craft does (AUTO_MERGE_TOKEN).
+name: Auto-merge
+
+on:
+  pull_request_target:
+    types: [opened, reopened, ready_for_review, synchronize, edited]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: auto-merge-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  enable:
+    if: >-
+      github.event.pull_request.user.login == 'NoobyNull' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.draft == false &&
+      github.event.pull_request.base.ref == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Turn on auto-merge
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.html_url }}
+        run: |
+          # a re-run replays the old event, so check where the pull request points now
+          base=$(gh pr view "$PR" --json baseRefName --jq .baseRefName)
+          if [ "$base" != main ]; then
+            echo "::notice::This pull request now targets $base, not main, so auto-merge stays off."
+            exit 0
+          fi
+          gh pr merge --auto --merge "$PR"
+          echo "::notice::Auto-merge is on. GitHub merges this once the check passes."

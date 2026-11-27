@@ -1,13 +1,15 @@
-# Copies the README and every release (same tags, same signed files)
-# from the add-on's first home on NoobyNull into this repository.
+# Copies every release (same tags, same signed files) from the add-on's
+# first home on NoobyNull into this repository.
 # Safe to run again: releases already here are skipped.
+# It no longer copies the README: changes to this repository now come here
+# as pull requests, and main's ruleset refuses direct pushes.
 name: Copy releases
 on:
   push:
     branches: [main]
   workflow_dispatch:
 permissions:
-  contents: write
+  contents: write # creating releases
 jobs:
   copy:
     runs-on: ubuntu-latest
@@ -16,18 +18,10 @@ jobs:
       SRC: NoobyNull/CutCraft-Translations
     steps:
       - uses: actions/checkout@v4
-      - name: Copy the README and releases
+      - name: Copy the releases
         run: |
           set -euo pipefail
           shopt -s nullglob
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          gh api "repos/$SRC/contents/README.md" -H "Accept: application/vnd.github.raw" > README.md
-          if ! git ls-files --error-unmatch README.md >/dev/null 2>&1 || ! git diff --quiet -- README.md; then
-            git add README.md
-            git commit -m "docs: copy the README from $SRC"
-            git push
-          fi
           for tag in $(gh release list -R "$SRC" --limit 100 --json tagName,createdAt -q 'sort_by(.createdAt) | .[].tagName'); do
             if gh release view "$tag" >/dev/null 2>&1; then echo "$tag is already here"; continue; fi
             rm -rf assets && mkdir assets
