@@ -13,7 +13,8 @@
 # GitHub's own token is used, so a merge made here starts no push-to-main workflows (GitHub
 # never starts workflows for its own token's pushes). Copy releases can be run by hand from
 # the Actions tab. If a workflow that must run on every merge is added later, switch GH_TOKEN
-# to a fine-grained token owned by NoobyNull, as NoobyNull/Cut-Craft does (AUTO_MERGE_TOKEN).
+# to a fine-grained token with resource owner Power-Whittle and a lifetime of a year or less
+# (the organisation refuses longer ones), as Power-Whittle/PowerWhittle does (AUTO_MERGE_TOKEN).
 name: Auto-merge
 
 on:
