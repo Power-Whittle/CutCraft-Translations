@@ -33,3 +33,11 @@ jobs:
             gh release create "$tag" assets/* --target "$(git rev-parse HEAD)" --title "$(jq -r .name info.json)" --notes-file notes.md $pre
             echo "copied $tag"
           done
+          # Releases copied in one run are published in the order copied, and GitHub calls
+          # the last one published the latest, which is what PowerWhittle installs from. So
+          # mark the source's latest as the latest here too.
+          newest=$(gh release view -R "$SRC" --json tagName -q .tagName)
+          if gh release view "$newest" >/dev/null 2>&1; then
+            gh release edit "$newest" --latest
+            echo "$newest is the latest"
+          fi
